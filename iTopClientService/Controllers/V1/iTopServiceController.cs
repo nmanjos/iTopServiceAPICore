@@ -14,14 +14,24 @@ namespace iTopClientService.Controllers
     [ApiController]
     public class iTopServiceController : ControllerBase
     {
-        // POST api/values
-        [HttpPost(APIRoute.iTopService.CreateIncident)]
-        public async Task<IActionResult> CreateIncident([FromBody] string value)
+        private readonly IiTopService itopService;
+
+        public iTopServiceController(IiTopService iTopService)
         {
-            var response = await iTopService.CreateInsidentAsync();
+            itopService = iTopService;
+        }
+        // POST api/values
+       [HttpPost(APIRoute.iTopService.CreateIncident)]
+        public async Task<IActionResult> CreateIncident([FromBody] iTopCreateRequest value)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var response = await itopService.CreateInsidentAsync(value);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{PostId}", post.Id.ToString());
+            var locationUri = baseUrl + "/" + APIRoute.iTopService.CreateIncident;
 
             return Created(locationUri, response);
         }

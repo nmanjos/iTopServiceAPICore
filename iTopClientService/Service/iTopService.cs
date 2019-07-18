@@ -3,30 +3,30 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using iTopClientService.Contract.Requests;
-using iTopClientService.Contract.Response;
+
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using iTopClientService.Model;
 using iTopClientService.Options;
-using System.Configuration;
-using Microsoft.Extensions.Options;
 
+using Microsoft.Extensions.Options;
+using iTopClientService.Contract.V1.Response;
+using iTopClientService.Contract.V1.Requests;
 
 namespace iTopClientService.Service
 {
-    internal class iTopService
+    internal class iTopService : IiTopService
     {
-        private iTopAPIOptions iTopAPIOptions { get; set; }
+        private readonly iTopAPIOptions ItopAPIOptions;
 
         public iTopService(IOptions<iTopAPIOptions> settings)
         {
-            iTopAPIOptions = settings.Value;
+            ItopAPIOptions = settings.Value;
         }
 
         
 
-        public static async Task<HttpResponseMessage> iTopAPIWorker(iTopAPIMessage Message)
+        private static async Task<HttpResponseMessage> iTopAPIWorker(iTopAPIMessage Message)
         {
             
             HttpResponseMessage res = null;
@@ -58,8 +58,8 @@ namespace iTopClientService.Service
         {
             
             iTopAPIMessage msg = new iTopAPIMessage();
-            msg.EndPoint = iTopAPIOptions.Endpoint;
-            var creds = new Credentials { Username = iTopAPIOptions.Username, Password = iTopAPIOptions.Password };
+            msg.EndPoint = ItopAPIOptions.Endpoint;
+            var creds = new Credentials { Username = ItopAPIOptions.Username, Password = ItopAPIOptions.Password };
             msg.Credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(creds.Username));
             msg.Create = message;
             //msg.Create.operation = message.operation;

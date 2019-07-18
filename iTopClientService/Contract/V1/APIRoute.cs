@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace iTopClientService.Contract.V1
 {
-    public class APIRoute
+    public static class APIRoute
     {
 
         public const string Root = "api";
@@ -18,11 +18,11 @@ namespace iTopClientService.Contract.V1
             
         }
 
-        public static class Identity
-        {
-            public const string Login = Base + "/identity/login";
+        //public static class Identity
+        //{
+        //    public const string Login = Base + "/identity/login";
 
-            public const string Register = Base + "/identity/register";
-        }
+        //    public const string Register = Base + "/identity/register";
+        //}
     }
 }

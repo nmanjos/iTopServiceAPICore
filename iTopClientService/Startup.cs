@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iTopClientService.Options;
+using iTopClientService.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,7 +28,15 @@ namespace iTopClientService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<iTopAPIOptions>(Configuration.GetSection("iTopAPIOptions"));
+
+            
+
+            var ItopAPIOptions = new iTopAPIOptions();
+            Configuration.Bind(key: "iTopAPIOptions", ItopAPIOptions);
+
+            services.AddSingleton(ItopAPIOptions);
+            services.AddScoped<IiTopService, iTopService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerGen(x =>
             {

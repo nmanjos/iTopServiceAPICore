@@ -1,4 +1,4 @@
-﻿using iTopClientService.Contract.Requests;
+﻿using iTopClientService.Contract.V1.Requests;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace iTopClientService.Model
 
 
 
-    public class Credentials
+    internal class Credentials
     {
         [JsonProperty("agent")]
         public Agent Agent { get; set; }
@@ -31,7 +31,7 @@ namespace iTopClientService.Model
         public string Token { get; set; }
     }
 
-    public class Agent
+    internal class Agent
     {
         [JsonProperty("name")]
         public string Name { get; set; }
