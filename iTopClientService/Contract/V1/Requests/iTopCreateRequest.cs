@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace iTopClientService.Contract.V1.Requests
 {
@@ -9,6 +10,7 @@ namespace iTopClientService.Contract.V1.Requests
     {
         public string operation { get; set; }
         public string comment { get; set; }
+        [JsonProperty(PropertyName ="class")]
         public string _class { get; set; }
         public string output_fields { get; set; }
         public Fields fields { get; set; }

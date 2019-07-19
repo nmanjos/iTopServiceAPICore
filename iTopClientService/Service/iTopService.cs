@@ -15,7 +15,7 @@ using iTopClientService.Contract.V1.Requests;
 
 namespace iTopClientService.Service
 {
-    internal class iTopService : IiTopService
+    public class iTopService : IiTopService
     {
         private readonly iTopAPIOptions ItopAPIOptions;
 
@@ -46,7 +46,7 @@ namespace iTopClientService.Service
                         .ConfigureAwait(false))
                     {
                         response.EnsureSuccessStatusCode();
-                        res = response.Content.ReadAsStringAsync().Result; ;
+                        res = response.Content.ReadAsStringAsync().Result; 
                     }
                 }
             }
@@ -68,7 +68,8 @@ namespace iTopClientService.Service
             //msg.Create.fields.caller_id.first_name = "";
             //msg.Create.fields.caller_id.name = "";
             // var response = (await iTopAPIWorker(msg)).Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<iTopCreateResponse>(await iTopAPIWorker(msg));
+            var rsp = await iTopAPIWorker(msg);
+            return JsonConvert.DeserializeObject<iTopCreateResponse>(rsp);
         }
     }
     
