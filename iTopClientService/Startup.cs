@@ -30,11 +30,9 @@ namespace iTopClientService
         {
 
             
+            var ItopAPIOptions = Configuration.GetSection("iTopAPIOptions");
+            services.Configure<iTopAPIOptions>(ItopAPIOptions);
 
-            var ItopAPIOptions = new iTopAPIOptions();
-            Configuration.Bind(key: "iTopAPIOptions", ItopAPIOptions);
-
-            services.AddSingleton(ItopAPIOptions);
             services.AddScoped<IiTopService, iTopService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -26,10 +26,12 @@ namespace iTopClientService.Service
 
         
 
-        private static async Task<HttpResponseMessage> iTopAPIWorker(iTopAPIMessage Message)
+        private static async Task<string> iTopAPIWorker(iTopAPIMessage Message)
         {
+            string res = null;
             
-            HttpResponseMessage res = null;
+
+            //HttpResponseMessage res = new HttpResponseMessage();
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Post, Message.EndPoint))
             {
@@ -44,7 +46,7 @@ namespace iTopClientService.Service
                         .ConfigureAwait(false))
                     {
                         response.EnsureSuccessStatusCode();
-                        res = response;
+                        res = response.Content.ReadAsStringAsync().Result; ;
                     }
                 }
             }
@@ -58,15 +60,15 @@ namespace iTopClientService.Service
         {
             
             iTopAPIMessage msg = new iTopAPIMessage();
-            msg.EndPoint = ItopAPIOptions.Endpoint;
+            msg.EndPoint = $"{ItopAPIOptions.Endpoint}&auth_user={ItopAPIOptions.Username}&auth_pwd={ItopAPIOptions.Password}&json_data={JsonConvert.SerializeObject(message)}";
             var creds = new Credentials { Username = ItopAPIOptions.Username, Password = ItopAPIOptions.Password };
             msg.Credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(creds.Username));
             msg.Create = message;
             //msg.Create.operation = message.operation;
             //msg.Create.fields.caller_id.first_name = "";
             //msg.Create.fields.caller_id.name = "";
-            var response = await iTopAPIWorker(msg);
-            return JsonConvert.DeserializeObject<iTopCreateResponse>(response.Content.ReadAsStringAsync().Result);
+            // var response = (await iTopAPIWorker(msg)).Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<iTopCreateResponse>(await iTopAPIWorker(msg));
         }
     }
     
